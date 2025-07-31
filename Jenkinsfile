@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        SONARQUBE_ENV = 'SonarQube' // Must match name in Jenkins SonarQube config
+        SONARQUBE_ENV = 'SonarQube' // This must match Jenkins config name
     }
 
     stages {
@@ -19,7 +19,9 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    sh 'mvn clean verify sonar:sonar'
+                    dir('devops-practice') { // 👈 THIS is the key fix
+                        sh 'mvn clean verify sonar:sonar'
+                    }
                 }
             }
         }
