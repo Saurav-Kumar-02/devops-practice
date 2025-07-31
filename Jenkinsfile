@@ -1,15 +1,24 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven 3.9.6'  // Set this in Jenkins Global Tool Configuration
+    }
+
+    environment {
+        SONARQUBE_ENV = 'SonarQube' // Name used in Jenkins SonarQube config
+    }
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo 'Building...'
+                git 'https://github.com/Saurav-Kumar-02/devops-practice.git'
             }
         }
-        stage('SonarQube Scan') {
+
+        stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('MySonarServer') {
+                withSonarQubeEnv("${SONARQUBE_ENV}") {
                     sh 'mvn clean verify sonar:sonar'
                 }
             }
