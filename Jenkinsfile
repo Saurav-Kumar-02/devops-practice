@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3.9.6'  // Ensure this is configured in Jenkins tools
+        maven 'Maven 3.9.6'
     }
 
     environment {
-        SONARQUBE_ENV = 'SonarQube' // This must match Jenkins config name
+        SONARQUBE_ENV = 'SonarQube'
     }
 
     stages {
@@ -19,9 +19,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    dir('devops-practice') { // 👈 THIS is the key fix
-                        sh 'mvn clean verify sonar:sonar'
-                    }
+                    sh 'mvn clean verify sonar:sonar'
                 }
             }
         }
